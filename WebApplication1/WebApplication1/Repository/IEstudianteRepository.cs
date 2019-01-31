@@ -6,8 +6,10 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Repository
 {
-    interface IEstudianteRepository
+    public interface IEstudianteRepository
     {
         List<EstudianteViewModel> ObtenerEstudiantes();
+        EstudianteViewModel ObtenerEstudiante(int id);
+        void CrearEstudiante(EstudianteViewModel nuevoEstudiante);
     }
 }

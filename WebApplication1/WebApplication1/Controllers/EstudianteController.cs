@@ -5,55 +5,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
     public class EstudianteController : Controller
     {
-        List<EstudianteViewModel> listaEstudiantes = new List<EstudianteViewModel>();
-        
-        public EstudianteController()
+        readonly IEstudianteRepository estudianteRepository;
+        public EstudianteController(IEstudianteRepository estudianteRepository)
         {
-            listaEstudiantes.Add(new EstudianteViewModel()
-            {
-                Id = 1,
-                Nombre = "Willy",
-                Apellido = "Castillo"
-            });
-            EstudianteViewModel est2 = new EstudianteViewModel()
-            {
-                Id = 2,
-                Nombre = "Miriam",
-                Apellido = "Castillo"
-            };
-            listaEstudiantes.Add(est2);
-            EstudianteViewModel est3 = new EstudianteViewModel();
-            est3.Id = 3;
-            est3.Nombre = "Juan";
-            est3.Apellido = "Lopez";
-            listaEstudiantes.Add(est3);
+            this.estudianteRepository = estudianteRepository;
         }
 
         // GET: Estudiante
         public ActionResult Index()
         {
-
-
-            listaEstudiantes.Add(new EstudianteViewModel()
-            {
-                Id = 4,
-                Nombre = "Willy",
-                Apellido = "Castillo"
-            });
-
+            List<EstudianteViewModel> listaEstudiantes= estudianteRepository.ObtenerEstudiantes();
             return View(listaEstudiantes);
         }
 
         // GET: Estudiante/Details/5
         public ActionResult Details(int id)
         {
-            EstudianteViewModel estudiante =
-                listaEstudiantes.FirstOrDefault(x => x.Id == id);
+            EstudianteViewModel estudiante = estudianteRepository.ObtenerEstudiante(id);
             return View(estudiante);
         }
 
@@ -66,14 +40,21 @@ namespace WebApplication1.Controllers
         // POST: Estudiante/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Create([FromForm]EstudianteViewModel estudiante)
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create([FromForm]EstudianteViewModel estudiante)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
 
-                return RedirectToAction(nameof(Index));
+                    // TODO: Add insert logic here
+                    estudianteRepository.CrearEstudiante(estudiante);
+                    return RedirectToAction(nameof(Index));
+                }
+                else {
+                    return View(estudiante);
+                }
+
             }
             catch
             {
