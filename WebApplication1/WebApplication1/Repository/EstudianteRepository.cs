@@ -48,5 +48,26 @@ namespace WebApplication1.Repository
         {
             listaEstudiantes.Add(nuevoEstudiante);
         }
+
+        public void ModificarEstudiante(EstudianteViewModel nuevo)
+        {
+            for (int i = 0; i < listaEstudiantes.Count; i++)
+            {
+                if (listaEstudiantes[i].Id == nuevo.Id)
+                {
+                    listaEstudiantes[i].Nombre = nuevo.Nombre;
+                    listaEstudiantes[i].Apellido = nuevo.Apellido;
+                }
+            }
+
+            //listaEstudiantes.RemoveAt(listaEstudiantes.FindIndex(x => x.Id == nuevo.Id));
+            //listaEstudiantes.Add(nuevo);
+        }
+
+        public void QuitarEstudiante(int id)
+        {
+            listaEstudiantes.RemoveAt(listaEstudiantes.FindIndex(x => x.Id == id));
+            
+        }
     }
 }

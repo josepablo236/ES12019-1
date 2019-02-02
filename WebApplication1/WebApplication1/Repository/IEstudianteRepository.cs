@@ -11,5 +11,7 @@ namespace WebApplication1.Repository
         List<EstudianteViewModel> ObtenerEstudiantes();
         EstudianteViewModel ObtenerEstudiante(int id);
         void CrearEstudiante(EstudianteViewModel nuevoEstudiante);
+        void ModificarEstudiante(EstudianteViewModel nuevo);
+        void QuitarEstudiante(int id);
     }
 }

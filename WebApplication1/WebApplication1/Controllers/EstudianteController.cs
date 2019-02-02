@@ -65,17 +65,18 @@ namespace WebApplication1.Controllers
         // GET: Estudiante/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            EstudianteViewModel estudiante = estudianteRepository.ObtenerEstudiante(id);
+            return View(estudiante);
         }
 
         // POST: Estudiante/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, [FromForm]EstudianteViewModel estudiante)
         {
             try
             {
-                // TODO: Add update logic here
+                estudianteRepository.ModificarEstudiante(estudiante);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -88,18 +89,19 @@ namespace WebApplication1.Controllers
         // GET: Estudiante/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            EstudianteViewModel estudiante = estudianteRepository.ObtenerEstudiante(id);
+            return View(estudiante);
         }
 
         // POST: Estudiante/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, [FromForm] EstudianteViewModel estudiante)
         {
             try
             {
                 // TODO: Add delete logic here
-
+                estudianteRepository.QuitarEstudiante(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
