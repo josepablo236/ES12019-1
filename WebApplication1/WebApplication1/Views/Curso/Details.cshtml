@@ -1,0 +1,69 @@
+﻿@model WebApplication1.Models.CursoViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CursoViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CodCatedratico)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CodCatedratico)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Materia.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Materia.Nombre)
+        </dd>
+
+    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Apellido)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Estudiantes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellido)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

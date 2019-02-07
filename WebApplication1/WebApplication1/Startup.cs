@@ -32,6 +32,8 @@ namespace WebApplication1
             });
 
             services.AddSingleton<IEstudianteRepository, EstudianteRepository>();
+            services.AddSingleton<IMateriaRepository, MateriaRepository>();
+            services.AddSingleton<ICursoRepository, CursoRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
