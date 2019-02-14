@@ -14,5 +14,6 @@ namespace WebApplication1.Models
         public string Nombre { get; set; }
         [Required(ErrorMessage = "El apellido del estudiante es requerido")]
         public string Apellido { get; set; }
+        public string NombreApellido { get { return Nombre + " " + Apellido; } }
     }
 }
