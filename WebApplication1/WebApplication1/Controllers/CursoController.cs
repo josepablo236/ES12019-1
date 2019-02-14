@@ -62,15 +62,17 @@ namespace WebApplication1.Controllers
             try
             {
                 int materia = Convert.ToInt32(curso.MateriaSeleccionada);
+                int estudiante = Convert.ToInt32(curso.EstudianteSeleccionado);
                 // TODO: Add insert logic here
                 CursoEntity nuevoCurso = (CursoEntity)curso;
                 //nuevoCurso.Id = curso.Id;
                 //nuevoCurso.CodCatedratico = curso.CodCatedratico;
                 nuevoCurso.Materia = materiaRepository.ObtenerMaterias().FirstOrDefault(x => x.Id == materia);
                 nuevoCurso.Estudiantes = new List<EstudianteViewModel>();
+                nuevoCurso.Estudiantes.Add(estudianteRepository.ObtenerEstudiante(estudiante));
                 cursoRepository.CrearCurso(nuevoCurso);
-                
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Edit", new { id = nuevoCurso.Id });
             }
             catch
             {
@@ -81,7 +83,19 @@ namespace WebApplication1.Controllers
         // GET: Curso/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            CursoEntity curso = cursoRepository.ObtenerCurso(id);
+            CursoViewModel cursovm = new CursoViewModel()
+            {
+                Id = curso.Id,
+                Materia = curso.Materia,
+                CodCatedratico = curso.CodCatedratico,
+                Estudiantes = curso.Estudiantes
+            };
+            cursovm.MateriaSeleccionada = curso.Materia.Id.ToString();
+            cursovm.EstudiantesDisponibles = estudianteRepository.ObtenerEstudiantes();
+            cursovm.MateriasDisponibles = materiaRepository.ObtenerMaterias();
+            return View(cursovm);
         }
 
         // POST: Curso/Edit/5
@@ -101,6 +115,42 @@ namespace WebApplication1.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AgregarEstudiante(int id, IFormCollection collection)
+        {
+            try
+            {
+                CursoEntity curso = cursoRepository.ObtenerCurso(id);
+
+                int estudiante = Convert.ToInt32(collection["EstudianteSeleccionado"]);
+                
+                curso.Estudiantes.Add(estudianteRepository.ObtenerEstudiantes().FirstOrDefault(x => x.Id == estudiante));
+                cursoRepository.ModificarCurso(curso);
+                return RedirectToAction("Edit", new { id = id });
+            }
+            catch
+            {
+                return RedirectToAction("Edit", new { id = id });
+            }
+        }
+
+        public ActionResult QuitarEstudiante(int id, int idEstudiante)
+        {
+            try
+            {
+                CursoEntity curso = cursoRepository.ObtenerCurso(id);
+
+                curso.Estudiantes.RemoveAt(curso.Estudiantes.FindIndex(x => x.Id == idEstudiante));
+
+                cursoRepository.ModificarCurso(curso);
+                return RedirectToAction("Edit", new { id = id });
+            }
+            catch
+            {
+                return RedirectToAction("Edit", new { id = id });
+            }
+        }
         // GET: Curso/Delete/5
         public ActionResult Delete(int id)
         {

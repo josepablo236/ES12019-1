@@ -8,6 +8,12 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+    <form asp-controller="Estudiante" asp-action="Index" method="get">
+        <p>
+            Nombre/Apellido: <input type="text" name="SearchString" value="@ViewBag.SearchString"/>
+            <input type="submit" value="Search" />
+        </p>
+    </form>
 </p>
 <table class="table">
     <thead>

@@ -31,7 +31,7 @@ namespace WebApplication1
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddSingleton<IEstudianteRepository, EstudianteRepository>();
+            services.AddSingleton<IEstudianteRepository, EstudianteFileRepository>();
             services.AddSingleton<IMateriaRepository, MateriaRepository>();
             services.AddSingleton<ICursoRepository, CursoRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

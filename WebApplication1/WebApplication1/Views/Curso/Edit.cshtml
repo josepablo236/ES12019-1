@@ -1,0 +1,93 @@
+﻿@model WebApplication1.Models.CursoViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Create</h2>
+
+<h4>CursoViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodCatedratico" class="control-label"></label>
+                <input asp-for="CodCatedratico" class="form-control" />
+                <span asp-validation-for="CodCatedratico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Materia</label>
+                @Html.DropDownListFor(x => x.MateriaSeleccionada,
+             new SelectList(Model.MateriasDisponibles, "Id", "Nombre"),
+             "-- Seleccione La Materia --",
+             new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+        <form asp-action="AgregarEstudiante">
+            <input asp-for="Id" type="hidden" />
+            <div class="form-group">
+                <label class="control-label">Estudiante</label>
+                @Html.DropDownListFor(x => x.EstudianteSeleccionado,
+             new SelectList(Model.EstudiantesDisponibles, "Id", "NombreApellido"),
+             "-- Seleccione Nuevo Estudiante --",
+             new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Agregar Estudiante" class="btn btn-default" />
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Nombre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estudiantes.FirstOrDefault().Apellido)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Estudiantes)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Apellido)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Delete", "QuitarEstudiante", new { id = Model.Id, idEstudiante = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

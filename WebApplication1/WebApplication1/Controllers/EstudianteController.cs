@@ -18,10 +18,19 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Estudiante
-        public ActionResult Index()
+        public ActionResult Index(string SearchString)
         {
-            List<EstudianteViewModel> listaEstudiantes= estudianteRepository.ObtenerEstudiantes();
-            return View(listaEstudiantes);
+            if(string.IsNullOrEmpty(SearchString))
+            {
+                List<EstudianteViewModel> listaEstudiantes = estudianteRepository.ObtenerEstudiantes();
+                return View(listaEstudiantes);
+            }
+            else
+            {
+                List<EstudianteViewModel> listaEstudiantes = estudianteRepository.ObtenerEstudiantes().FindAll(x=>x.Nombre.Contains(SearchString) || x.Apellido.Contains(SearchString));
+                ViewBag.SearchString = SearchString;
+                return View(listaEstudiantes);
+            }
         }
 
         // GET: Estudiante/Details/5
